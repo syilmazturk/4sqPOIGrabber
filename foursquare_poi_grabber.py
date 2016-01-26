@@ -91,12 +91,52 @@ class FoursquarePOIGrabber:
         self.dlg.webView_gmap.load(QUrl('http://yilmazturk.info/ankageo/gmap.html'))
 
         self.dlg.pushButton_fetchPOI.clicked.connect(self.hacilar)
+        self.populate_combobox()
 
     def hacilar(self):
         self.dlg.lineEdit_clientID.setText(lat_value)
         self.dlg.lineEdit_clientSecret.setText(lon_value)
         print lat_value
         print lon_value
+
+    def populate_combobox(self):
+        foursquare_categories = {
+
+            "Hospital": "4bf58dd8d48988d196941735",
+            "Dentist's Office": "4bf58dd8d48988d178941735",
+            "Veterinarian": "4d954af4a243a5684765b473",
+            "University": "4bf58dd8d48988d1ae941735",
+            "High School": "4bf58dd8d48988d13d941735",
+            "Elementary School": "4f4533804b9074f6e4fb0105",
+            "Museum": "4bf58dd8d48988d181941735",
+            "Theater": "4bf58dd8d48988d137941735",
+            "Movie Theater": "4bf58dd8d48988d17f941735",
+            "Food": "4d4b7105d754a06374d81259",
+            "Cafe": "4bf58dd8d48988d16d941735",
+            "Bar": "4bf58dd8d48988d116941735",
+            "Office": "4bf58dd8d48988d124941735",
+            "ATM": "52f2ab2ebcbc57f1066b8b56",
+            "Bank": "4bf58dd8d48988d10a951735",
+            "Mosque": "4bf58dd8d48988d138941735",
+            "Church": "4bf58dd8d48988d132941735",
+            "Synagogue": "4bf58dd8d48988d139941735",
+            "Hotel": "4bf58dd8d48988d1fa931735",
+            "Gas Station": "4bf58dd8d48988d113951735",
+            "Supermarket": "52f2ab2ebcbc57f1066b8b46",
+            "Barbershop": "4bf58dd8d48988d110951735",
+            "Laundry Service": "4bf58dd8d48988d1fc941735",
+            "Bus Stop": "52f2ab2ebcbc57f1066b8b4f",
+            "Metro Station": "4bf58dd8d48988d1fd931735",
+            "Tram Station": "52f2ab2ebcbc57f1066b8b51",
+            "Taxi": "4bf58dd8d48988d130951735",
+            "Parking": "4c38df4de52ce0d596b336e1",
+            "Car Wash": "4f04ae1f2fb6e1c99f3db0ba",
+            "Rental Car": "4bf58dd8d48988d1ef941735"
+
+        }
+
+        for category in foursquare_categories.keys():
+            self.dlg.comboBox_category.addItem(category)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
