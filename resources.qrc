@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/plugins/FoursquarePOIGrabber" >
+        <file>icon.png</file>
+        <file>powered-by-foursquare.png</file>
+    </qresource>
+</RCC>
