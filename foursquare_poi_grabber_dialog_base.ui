@@ -125,7 +125,7 @@
      </rect>
     </property>
     <property name="inputMethodHints">
-     <set>Qt::ImhPreferNumbers</set>
+     <set>Qt::ImhNone</set>
     </property>
     <property name="text">
      <string/>
