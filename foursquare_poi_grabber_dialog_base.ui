@@ -124,6 +124,18 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhPreferNumbers</set>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="readOnly">
+     <bool>false</bool>
+    </property>
+    <property name="placeholderText">
+     <string/>
+    </property>
    </widget>
    <widget class="QComboBox" name="comboBox_category">
     <property name="geometry">

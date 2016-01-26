@@ -95,11 +95,14 @@ class FoursquarePOIGrabber:
 
     def hacilar(self):
         self.dlg.lineEdit_clientID.setText(lat_value)
-        self.dlg.lineEdit_clientSecret.setText(lon_value)
+
+        category_name = self.dlg.comboBox_category.currentText()
+        self.dlg.lineEdit_clientSecret.setText(foursquare_categories[category_name])
         print lat_value
         print lon_value
 
     def populate_combobox(self):
+        global foursquare_categories
         foursquare_categories = {
             "Medical - Hospital": "4bf58dd8d48988d196941735",
             "Medical - Dentist's Office": "4bf58dd8d48988d178941735",
@@ -132,11 +135,11 @@ class FoursquarePOIGrabber:
             "Transport - Taxi": "4bf58dd8d48988d130951735",
             "Transport - Parking": "4c38df4de52ce0d596b336e1"
         }
-        a = []
-        for category in foursquare_categories.keys():
-            a.append(category)
 
-        self.dlg.comboBox_category.addItems(sorted(a))
+        category_list = []
+        for category in foursquare_categories.keys():
+            category_list.append(category)
+        self.dlg.comboBox_category.addItems(sorted(category_list))
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
