@@ -21,8 +21,9 @@
  ***************************************************************************/
 """
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QUrl, QObject, pyqtSlot
-from PyQt4.QtGui import QAction, QIcon
-
+from PyQt4.QtGui import QAction, QIcon, QIntValidator, QValidator
+from qgis.utils import iface
+from qgis.gui import QgsMessageBar
 # Initialize Qt resources from file resources.py
 import resources_rc
 # Import the code for the dialog
@@ -87,11 +88,41 @@ class FoursquarePOIGrabber:
         self.toolbar = self.iface.addToolBar(u'FoursquarePOIGrabber')
         self.toolbar.setObjectName(u'FoursquarePOIGrabber')
 
+        validator = QIntValidator()
+        self.dlg.lineEdit_radius.setValidator(validator)
+        self.dlg.lineEdit_radius.setMaxLength(6)
+        self.dlg.lineEdit_radius.textChanged.connect(self.check_state)
+        self.dlg.lineEdit_radius.editingFinished.connect(self.check_radius)
+
         self.dlg.webView_gmap.loadFinished.connect(self.enableJavaScript)
         self.dlg.webView_gmap.load(QUrl('http://yilmazturk.info/ankageo/gmap.html'))
 
         self.dlg.pushButton_fetchPOI.clicked.connect(self.hacilar)
         self.populate_combobox()
+
+    def check_state(self):
+        radius_lineedit = self.dlg.lineEdit_radius
+        validator = QIntValidator()
+        state = validator.validate(radius_lineedit.text(), 0)[0]
+
+        if state == QValidator.Acceptable:
+            color = '#c4df9b'
+            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+        elif state == QValidator.Intermediate:
+            color = '#fff79a'
+            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+        else:
+            color = '#f6989d'
+            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+    def check_radius(self):
+        if int(self.dlg.lineEdit_radius.text()) > 100000:
+            color = '#f6989d'
+            self.dlg.lineEdit_radius.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            iface.messageBar().pushMessage(u"Error:", u" The maximum supported radius is currently 100,000 meters.",
+                                           level=QgsMessageBar.CRITICAL, duration=3)
+        else:
+            pass
 
     def hacilar(self):
         self.dlg.lineEdit_clientID.setText(lat_value)
