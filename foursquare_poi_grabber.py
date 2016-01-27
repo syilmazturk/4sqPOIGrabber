@@ -127,52 +127,55 @@ class FoursquarePOIGrabber:
             pass
 
     def get_poi(self):
-        client_id = self.dlg.lineEdit_clientID.text()
-        client_secret = self.dlg.lineEdit_clientSecret.text()
-        radius = self.dlg.lineEdit_radius.text()
-        category_name = self.dlg.comboBox_category.currentText()
-        category_id = foursquare_categories[category_name]
-        current_date = str(datetime.datetime.now().date()).replace("-", "")
-        url = "https://api.foursquare.com/v2/venues/search?ll=%s,%s&radius=%s&intent=browse&categoryId=%s&limit=50&client_id=%s&client_secret=%s&v=%s" % (lat, lon, radius, category_id, client_id, client_secret, current_date)
+        try:
+            client_id = self.dlg.lineEdit_clientID.text()
+            client_secret = self.dlg.lineEdit_clientSecret.text()
+            radius = self.dlg.lineEdit_radius.text()
+            category_name = self.dlg.comboBox_category.currentText()
+            category_id = foursquare_categories[category_name]
+            current_date = str(datetime.datetime.now().date()).replace("-", "")
+            url = "https://api.foursquare.com/v2/venues/search?ll=%s,%s&radius=%s&intent=browse&categoryId=%s&limit=50&client_id=%s&client_secret=%s&v=%s" % (lat, lon, radius, category_id, client_id, client_secret, current_date)
 
-        req = urllib2.Request(url)
-        opener = urllib2.build_opener()
-        f = opener.open(req)
-        data = json.loads(f.read())
+            req = urllib2.Request(url)
+            opener = urllib2.build_opener()
+            f = opener.open(req)
+            data = json.loads(f.read())
 
-        json_object_count = len(data['response']['venues'])
-        iface.messageBar().pushMessage(u"Info:", str(json_object_count) + " POI(s) fetched for " + category_name + " category", level=QgsMessageBar.INFO, duration=5)
+            json_object_count = len(data['response']['venues'])
+            iface.messageBar().pushMessage(u"Info:", str(json_object_count) + " POI(s) fetched for " + category_name + " category", level=QgsMessageBar.INFO, duration=5)
 
-        poi_id = []
-        poi_name = []
-        poi_lon = []
-        poi_lat = []
+            poi_id = []
+            poi_name = []
+            poi_lon = []
+            poi_lat = []
 
-        for i in range(0, json_object_count):
-            poi_id.append(data['response']['venues'][i]['id'])
-            poi_name.append(data['response']['venues'][i]['name'])
-            poi_lon.append(data['response']['venues'][i]['location']['lng'])
-            poi_lat.append(data['response']['venues'][i]['location']['lat'])
+            for i in range(0, json_object_count):
+                poi_id.append(data['response']['venues'][i]['id'])
+                poi_name.append(data['response']['venues'][i]['name'])
+                poi_lon.append(data['response']['venues'][i]['location']['lng'])
+                poi_lat.append(data['response']['venues'][i]['location']['lat'])
 
-        coord_pairs = []
+            coord_pairs = []
 
-        layer_name = "POI - %s" % category_name
-        memory_layer = QgsVectorLayer("Point?crs=epsg:4326", layer_name, "memory")
-        memory_layer.startEditing()
-        provider = memory_layer.dataProvider()
-        provider.addAttributes([QgsField("FoursqID", QVariant.String), QgsField("Name",  QVariant.String), QgsField("Category", QVariant.String), QgsField("Date", QVariant.String)])
+            layer_name = "POI - %s" % category_name
+            memory_layer = QgsVectorLayer("Point?crs=epsg:4326", layer_name, "memory")
+            memory_layer.startEditing()
+            provider = memory_layer.dataProvider()
+            provider.addAttributes([QgsField("FoursqID", QVariant.String), QgsField("Name",  QVariant.String), QgsField("Category", QVariant.String), QgsField("Date", QVariant.String)])
 
-        for fsid, name, x, y in zip(poi_id, poi_name, poi_lon, poi_lat):
-            geometry = QgsGeometry.fromPoint(QgsPoint(x, y))
-            feature = QgsFeature()
-            feature.setGeometry(geometry)
-            feature.setAttributes([fsid, name, category_name, current_date])
-            coord_pairs.append(feature)
+            for fsid, name, x, y in zip(poi_id, poi_name, poi_lon, poi_lat):
+                geometry = QgsGeometry.fromPoint(QgsPoint(x, y))
+                feature = QgsFeature()
+                feature.setGeometry(geometry)
+                feature.setAttributes([fsid, name, category_name, current_date])
+                coord_pairs.append(feature)
 
-        memory_layer.dataProvider().addFeatures(coord_pairs)
-        memory_layer.updateExtents()
-        memory_layer.commitChanges()
-        QgsMapLayerRegistry.instance().addMapLayer(memory_layer)
+            memory_layer.dataProvider().addFeatures(coord_pairs)
+            memory_layer.updateExtents()
+            memory_layer.commitChanges()
+            QgsMapLayerRegistry.instance().addMapLayer(memory_layer)
+        except:
+            iface.messageBar().pushMessage(u"Error:", "Please make sure to drop a pin on Google Map or fill in all the fields!", level=QgsMessageBar.CRITICAL, duration=5)
 
 
     def populate_combobox(self):
