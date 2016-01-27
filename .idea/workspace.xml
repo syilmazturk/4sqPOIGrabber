@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a877207e-9d56-491f-bb71-bbe334a864f9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/foursquare_poi_grabber_dialog_base.ui" afterPath="$PROJECT_DIR$/foursquare_poi_grabber_dialog_base.ui" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/foursquare_poi_grabber.py" afterPath="$PROJECT_DIR$/foursquare_poi_grabber.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="4sqPOIGrabber.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,10 +43,10 @@
       <file leaf-file-name="foursquare_poi_grabber.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/foursquare_poi_grabber.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1887" max-vertical-offset="5151">
-              <caret line="111" column="29" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.36724564" vertical-offset="2538" max-vertical-offset="5882">
+              <caret line="158" column="28" selection-start-line="158" selection-start-column="28" selection-end-line="158" selection-end-column="28" />
               <folding>
-                <element signature="e#1205#1305#0" expanded="true" />
+                <element signature="e#1205#1315#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,13 +122,13 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="165" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="163" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="165" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="164" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="166" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="164" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="840" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="832" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="166" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
@@ -388,7 +386,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27086616" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3007874" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36220473" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -439,7 +437,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4624">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1205#1305#0" expanded="true" />
+            <element signature="e#1205#1315#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -457,7 +455,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3893">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1205#1305#0" expanded="true" />
+            <element signature="e#1205#1315#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -472,10 +470,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/foursquare_poi_grabber.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1887" max-vertical-offset="5151">
-          <caret line="111" column="29" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.36724564" vertical-offset="2538" max-vertical-offset="5882">
+          <caret line="158" column="28" selection-start-line="158" selection-start-column="28" selection-end-line="158" selection-end-column="28" />
           <folding>
-            <element signature="e#1205#1305#0" expanded="true" />
+            <element signature="e#1205#1315#0" expanded="true" />
           </folding>
         </state>
       </provider>

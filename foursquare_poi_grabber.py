@@ -20,29 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QUrl, QObject, pyqtSlot
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QUrl, QObject, pyqtSlot, QVariant
 from PyQt4.QtGui import QAction, QIcon, QIntValidator, QValidator
-from qgis.utils import iface
+from qgis.core import QgsVectorLayer, QgsField, QgsGeometry, QgsPoint, QgsFeature, QgsMapLayerRegistry
 from qgis.gui import QgsMessageBar
+from qgis.utils import iface
 # Initialize Qt resources from file resources.py
 import resources_rc
 # Import the code for the dialog
 from foursquare_poi_grabber_dialog import FoursquarePOIGrabberDialog
+import datetime
+import urllib2
+import json
 import os.path
 
 
 class Foo(QObject):
     @pyqtSlot(str, result=str)
     def get_lat(self, value):
-        global lat_value
-        lat_value = value
-        return lat_value
+        global lat
+        lat = value
+        return lat
 
     @pyqtSlot(str, result=str)
     def get_lon(self, value):
-        global lon_value
-        lon_value = value
-        return lon_value
+        global lon
+        lon = value
+        return lon
 
 
 class FoursquarePOIGrabber:
@@ -59,7 +63,7 @@ class FoursquarePOIGrabber:
         :type iface: QgsInterface
         """
         # Save reference to the QGIS interface
-
+        global validator
         self.iface = iface
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
@@ -97,40 +101,79 @@ class FoursquarePOIGrabber:
         self.dlg.webView_gmap.loadFinished.connect(self.enableJavaScript)
         self.dlg.webView_gmap.load(QUrl('http://yilmazturk.info/ankageo/gmap.html'))
 
-        self.dlg.pushButton_fetchPOI.clicked.connect(self.hacilar)
+        self.dlg.pushButton_fetchPOI.clicked.connect(self.get_poi)
+
         self.populate_combobox()
 
     def check_state(self):
-        radius_lineedit = self.dlg.lineEdit_radius
-        validator = QIntValidator()
-        state = validator.validate(radius_lineedit.text(), 0)[0]
-
+        state = validator.validate(self.dlg.lineEdit_radius.text(), 0)[0]
         if state == QValidator.Acceptable:
             color = '#c4df9b'
-            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.dlg.lineEdit_radius.setStyleSheet('QLineEdit { background-color: %s }' % color)
         elif state == QValidator.Intermediate:
             color = '#fff79a'
-            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.dlg.lineEdit_radius.setStyleSheet('QLineEdit { background-color: %s }' % color)
         else:
             color = '#f6989d'
-            radius_lineedit.setStyleSheet('QLineEdit { background-color: %s }' % color)
+            self.dlg.lineEdit_radius.setStyleSheet('QLineEdit { background-color: %s }' % color)
 
     def check_radius(self):
         if int(self.dlg.lineEdit_radius.text()) > 100000:
             color = '#f6989d'
             self.dlg.lineEdit_radius.setStyleSheet('QLineEdit { background-color: %s }' % color)
             iface.messageBar().pushMessage(u"Error:", u" The maximum supported radius is currently 100,000 meters.",
-                                           level=QgsMessageBar.CRITICAL, duration=3)
+                                           level=QgsMessageBar.CRITICAL, duration=5)
         else:
             pass
 
-    def hacilar(self):
-        self.dlg.lineEdit_clientID.setText(lat_value)
-
+    def get_poi(self):
+        client_id = self.dlg.lineEdit_clientID.text()
+        client_secret = self.dlg.lineEdit_clientSecret.text()
+        radius = self.dlg.lineEdit_radius.text()
         category_name = self.dlg.comboBox_category.currentText()
-        self.dlg.lineEdit_clientSecret.setText(foursquare_categories[category_name])
-        print lat_value
-        print lon_value
+        category_id = foursquare_categories[category_name]
+        current_date = str(datetime.datetime.now().date()).replace("-", "")
+        url = "https://api.foursquare.com/v2/venues/search?ll=%s,%s&radius=%s&intent=browse&categoryId=%s&limit=50&client_id=%s&client_secret=%s&v=%s" % (lat, lon, radius, category_id, client_id, client_secret, current_date)
+
+        req = urllib2.Request(url)
+        opener = urllib2.build_opener()
+        f = opener.open(req)
+        data = json.loads(f.read())
+
+        json_object_count = len(data['response']['venues'])
+        iface.messageBar().pushMessage(u"Info:", str(json_object_count) + " POI(s) fetched for " + category_name + " category", level=QgsMessageBar.INFO, duration=5)
+
+        poi_id = []
+        poi_name = []
+        poi_lon = []
+        poi_lat = []
+
+        for i in range(0, json_object_count):
+            poi_id.append(data['response']['venues'][i]['id'])
+            poi_name.append(data['response']['venues'][i]['name'])
+            poi_lon.append(data['response']['venues'][i]['location']['lng'])
+            poi_lat.append(data['response']['venues'][i]['location']['lat'])
+
+        coord_pairs = []
+
+        layer_name = "POI - %s" % category_name
+        memory_layer = QgsVectorLayer("Point?crs=epsg:4326", layer_name, "memory")
+        memory_layer.startEditing()
+        provider = memory_layer.dataProvider()
+        provider.addAttributes([QgsField("FoursqID", QVariant.String), QgsField("Name",  QVariant.String), QgsField("Category", QVariant.String), QgsField("Date", QVariant.String)])
+
+        for fsid, name, x, y in zip(poi_id, poi_name, poi_lon, poi_lat):
+            geometry = QgsGeometry.fromPoint(QgsPoint(x, y))
+            feature = QgsFeature()
+            feature.setGeometry(geometry)
+            feature.setAttributes([fsid, name, category_name, current_date])
+            coord_pairs.append(feature)
+
+        memory_layer.dataProvider().addFeatures(coord_pairs)
+        memory_layer.updateExtents()
+        memory_layer.commitChanges()
+        QgsMapLayerRegistry.instance().addMapLayer(memory_layer)
+
 
     def populate_combobox(self):
         global foursquare_categories
