@@ -99,7 +99,7 @@ class FoursquarePOIGrabber:
         self.dlg.lineEdit_radius.editingFinished.connect(self.check_radius)
 
         self.dlg.webView_gmap.loadFinished.connect(self.enableJavaScript)
-        self.dlg.webView_gmap.load(QUrl('http://yilmazturk.info/ankageo/gmap.html'))
+        self.dlg.webView_gmap.load(QUrl('http://yilmazturk.info/poigrabber/gmap.html'))
 
         self.dlg.pushButton_fetchPOI.clicked.connect(self.get_poi)
 
