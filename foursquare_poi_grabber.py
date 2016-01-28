@@ -83,6 +83,7 @@ class FoursquarePOIGrabber:
 
         # Create the dialog (after translation) and keep reference
         self.dlg = FoursquarePOIGrabberDialog()
+        self.dlg.setFixedSize(640, 320)
         self.foo = Foo()
 
         # Declare instance attributes
